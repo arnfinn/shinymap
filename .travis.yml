@@ -9,6 +9,8 @@ r:
   - release
 
 before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libgdal-dev libproj-dev
   - Rscript -e "if (!require('covr')) install.packages('covr')"
   - Rscript -e "if (!require('roxygen2')) install.packages('roxygen2')"
   - Rscript -e "if (!require('devtools')) install.packages('devtools')"
