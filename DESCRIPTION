@@ -13,5 +13,8 @@ Imports:
   shinythemes,
   rsconnect,
   ggplot2,
-  leaflet
+  leaflet,
+  maps,
+  magrittr,
+  rgdal
 Suggests: testthat
