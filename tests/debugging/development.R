@@ -1,3 +1,119 @@
+##############
+# plot a map #
+##############
+
+#library(rgdal)
+norge <- rgdal::readOGR(dsn = "tests/testthat/data/maps", layer = "eldre", encoding = "ESRI Shapefile" )
+
+norge <- rgdal::readOGR(dsn = "tests/testthat/data/maps", layer = "eldre" )
+
+norge4 <- raster::shapefile("tests/testthat/data/maps/eldre")
+
+
+# https://github.com/tidyverse/ggplot2/wiki/plotting-polygon-shapefiles
+require("rgdal") # requires sp, will use proj.4 if installed
+require("maptools")
+require("ggplot2")
+require("plyr")
+
+original <- rgdal::readOGR(dsn = "tests/testthat/data/maps", layer = "eldre")
+
+# reduce the resolution by the use of the Douglas-Peucker algorithm.
+utah <- rgeos::gSimplify(original, tol = 500)
+
+#utah@data$id = rownames(original@data)
+utah.points = fortify(utah, region="id")
+#utah.df = join(utah.points, utah@data, by="id")
+
+ggplot(utah) + 
+  aes(long,lat,group=group) + 
+  geom_polygon() +
+  geom_path(color="white") +
+  coord_equal() #+
+#  scale_fill_brewer("Utah Ecoregion")
+
+
+
+require("rgdal") # requires sp, will use proj.4 if installed
+require("rgeos") # requires sp, will use proj.4 if installed
+require("maptools")
+require("ggplot2")
+require("plyr")
+
+# Reduser kart-størrelse
+eldre <- readOGR(dsn = "tests/testthat/data/maps", layer = "eldre")
+test2 <- gSimplify(eldre, tol = 500)
+test3 <- as(test2, "SpatialPolygonsDataFrame")
+# Read shapefile attributes
+df = data.frame(eldre)
+# Keep shp attributes
+test3 <- SpatialPolygonsDataFrame(test2, df)
+rgdal::writeOGR(test3,dsn = "tests/testthat/data/maps", layer = "eldre2", driver="ESRI Shapefile")
+
+
+
+
+eldre <- readOGR(dsn = "tests/testthat/data/maps", layer = "eldre")
+eldre@data$id <- rownames(eldre@data)
+eldre.points <- fortify(eldre, region="id")
+eldre.df <- join(eldre.points, eldre@data, by="id")
+
+test <- eldre@polygons
+test2 <- rgeos::gSimplify(eldre, tol = 5000)
+
+test3 <- fortify(test2, region = "id")
+
+test4 <- join(test3, eldre@data, by = "id")
+
+ggplot(test4,aes(x=long, y=lat, fill=bohf_str)) + 
+  #  coord_equal() + 
+  geom_polygon(colour="black", size=0.1, aes(group=group))
+
+
+ggplot(eldre.df,aes(x=long, y=lat, fill=bohf_str)) + 
+#  coord_equal() + 
+  geom_polygon(colour="black", size=0.1, aes(group=group))
+
+
+
+library(rgdal)
+
+plot(norge3)
+
+ggplot2::ggplot(data = norge3)
+
+plot(norge)
+
+head(norge$data)
+
+print(sp::proj4string(norge))
+
+plot(norge, axes=TRUE, border="gray")
+
+ggplot2::ggplot(data = norge)
+
+norge2 <- sf::read_sf(dsn = "tests/testthat/data/maps", layer = "eldre")
+
+norge3 <- rgdal::readOGR(dsn = "tests/testthat/data/maps", layer = "Kommune_FLATE")
+
+sapply(norge3, class)
+
+norge3
+
+plot(norge3)
+
+ggplot2::ggplot(data = norge3)
+
+head(norge2$geometry)
+
+head(norge$Shape_Leng)
+
+nrow(norge)
+
+plot(norge)
+
+sapply(norge$OBJECTID, class)
+
 # Just testing
 
 devtools::install_github("Helseatlas/shinymap", ref = "data_independence")
