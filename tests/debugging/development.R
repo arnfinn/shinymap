@@ -16,7 +16,9 @@ require("maptools")
 require("ggplot2")
 require("plyr")
 
-original <- rgdal::readOGR(dsn = "tests/testthat/data/maps", layer = "eldre")
+
+
+original <- rgdal::readOGR(dsn = "../kart/Norge_Oslo", layer = "HelseAtlas_Dagkir_v2_OsloSentrum")
 
 # reduce the resolution by the use of the Douglas-Peucker algorithm.
 utah <- rgeos::gSimplify(original, tol = 500)
@@ -33,7 +35,7 @@ ggplot(utah) +
 #  scale_fill_brewer("Utah Ecoregion")
 
 
-
+# Lagre redusert størrelse, shapefile
 require("rgdal") # requires sp, will use proj.4 if installed
 require("rgeos") # requires sp, will use proj.4 if installed
 require("maptools")
@@ -41,14 +43,50 @@ require("ggplot2")
 require("plyr")
 
 # Reduser kart-størrelse
-eldre <- readOGR(dsn = "tests/testthat/data/maps", layer = "eldre")
-test2 <- gSimplify(eldre, tol = 500)
+original <- rgdal::readOGR(dsn = "../kart/Norge_Oslo", layer = "HelseAtlas_Dagkir_v2_OsloSentrum")
+test2 <- gSimplify(original, tol = 500)
 test3 <- as(test2, "SpatialPolygonsDataFrame")
 # Read shapefile attributes
-df = data.frame(eldre)
+df = data.frame(original)
 # Keep shp attributes
 test3 <- SpatialPolygonsDataFrame(test2, df)
-rgdal::writeOGR(test3,dsn = "tests/testthat/data/maps", layer = "eldre2", driver="ESRI Shapefile")
+rgdal::writeOGR(test3,dsn = "../kart/Norge_Oslo", layer = "compressed", driver="ESRI Shapefile")
+
+
+
+# Lagre redusert størrelse, shapefile
+require("rgdal") # requires sp, will use proj.4 if installed
+require("rgeos") # requires sp, will use proj.4 if installed
+require("maptools")
+require("ggplot2")
+require("plyr")
+
+# Reduser kart-størrelse
+kols <- readOGR(dsn = "tests/testthat/data/maps", layer = "KOLS_4")
+test2 <- gSimplify(kols, tol = 50)
+test3 <- as(test2, "SpatialPolygonsDataFrame")
+# Read shapefile attributes
+df = data.frame(kols)
+# Keep shp attributes
+test3 <- SpatialPolygonsDataFrame(test2, df)
+
+rgdal::writeOGR(test3,dsn = "tests/testthat/data/maps", layer = "kols2", driver="ESRI Shapefile")
+
+
+# Reduser kart-størrelse
+avtspes2 <- readOGR(dsn = "tests/testthat/data/maps", layer = "Helseatlas_Dagkirurgi_v2")
+test2 <- gSimplify(avtspes2, tol = 50)
+test3 <- as(test2, "SpatialPolygonsDataFrame")
+# Read shapefile attributes
+df = data.frame(avtspes2)
+# Keep shp attributes
+test3 <- SpatialPolygonsDataFrame(test2, df)
+
+rgdal::writeOGR(test3,dsn = "tests/testthat/data/maps", layer = "dagkir2", driver="ESRI Shapefile")
+
+
+
+# read geojson and convert to shp
 
 
 
